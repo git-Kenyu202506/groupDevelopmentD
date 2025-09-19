@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<link rel="stylesheet" th:href="@{/css/style.css}">
 <meta charset="UTF-8">
 <title>ログイン</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+<script th:if="${error}">
+    alert([['${error}']]);
+</script>
+<script>
+function validateLogin() {
+    const id = document.querySelector('input[name="id"]').value.trim();
+    const password = document.querySelector('input[name="password"]').value.trim();
+    let errors = [];
+    if (!id) errors.push("社員IDは必須入力です。");
+    else if (!/^\d+$/.test(id)) errors.push("社員IDは数値で入力してください。");
+    if (!password) errors.push("パスワードは必須入力です。");
+    if (errors.length > 0) { alert(errors.join("\\n")); return false; }
+    return true;
+}
+</script>
 </head>
 <body>
-	<h2>ログイン</h2>
-<form th:action="@{/login}" method="post">
-    <label>名前: <input type="text" name="name"/></label><br>
-    <label>パスワード: <input type="password" name="password"/></label><br>
-    <button type="submit">ログイン</button>
-</form>
-<p th:text="${error}"></p>
-<a th:href="@{/register}">新規登録はこちら</a>
+<div class="form-container">
+    <h2>ログイン</h2>
+    <form th:action="@{/login}" th:object="${user}" method="post" 
+          class="form-box" onsubmit="return validateLogin()">
+        <label>社員ID:</label>
+        <input type="number" th:field="*{id}" name="id">
+        <label>パスワード:</label>
+        <input type="password" th:field="*{password}" name="password">
+        <button type="submit">ログイン</button>
+    </form>
+</div>
 </body>
 </html>

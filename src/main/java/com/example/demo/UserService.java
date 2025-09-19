@@ -6,18 +6,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-	 private final UserMapper userMapper;
+    private final UserMapper userMapper;
 
-	    public UserService(UserMapper userMapper) {
-	        this.userMapper = userMapper;
-	    }
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
-	    public void register(User user) {
-	        userMapper.insert(user);
-	    }
+    public Optional<User> login(int id, String password) {
+        return userMapper.findByIdAndPassword(id, password);
+    }
 
-	    public Optional<User> login(String name, String password) {
-	        return userMapper.findByNameAndPassword(name, password);
-	    }
-
+    public void register(User user) {
+        userMapper.insert(user);
+    }
 }

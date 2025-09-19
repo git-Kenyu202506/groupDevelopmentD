@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>社員情報登録（確認）</title>
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="form-container">
+    <h2>社員情報登録（確認）</h2>
+    <form th:action="@{/register/complete}" th:object="${user}" method="post" class="form-box">
+        <p>名前: <span th:text="*{name}"></span></p>
+        <p>年齢: <span th:text="*{age}"></span></p>
+        <p>開始日: <span th:text="*{day_start}"></span></p>
+        <p>終了日: <span th:text="*{day_end}"></span></p>
+        <p>パスワード: ●●●●●●●●</p>
+        <input type="hidden" th:field="*{name}">
+        <input type="hidden" th:field="*{age}">
+        <input type="hidden" th:field="*{day_start}">
+        <input type="hidden" th:field="*{day_end}">
+        <input type="hidden" th:field="*{password}">
+        <button type="submit">登録</button>
+    </form>
+    <form th:action="@{/register/back}" th:object="${user}" method="post" class="form-box">
+        <input type="hidden" th:field="*{name}">
+        <input type="hidden" th:field="*{age}">
+        <input type="hidden" th:field="*{day_start}">
+        <input type="hidden" th:field="*{day_end}">
+        <input type="hidden" th:field="*{password}">
+        <button type="submit">戻る</button>
+    </form>
+</div>
+</body>
+</html>

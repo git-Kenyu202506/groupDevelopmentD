@@ -14,7 +14,7 @@ public interface UserMapper {
 	            "VALUES (#{id},#{password}, #{name}, #{age}, #{day_start}, #{day_end})")
 	    void insert(User user);
 
-	    @Select("SELECT * FROM users WHERE name = #{name} AND password = #{password}")
-	    Optional<User> findByNameAndPassword(@Param("name") String name, @Param("password") String password);
+	    @Select("SELECT * FROM users WHERE id = #{id} AND password = #{password}")
+	    Optional<User> findByIdAndPassword(@Param("id") int id, @Param("password") String password);
 	}
 

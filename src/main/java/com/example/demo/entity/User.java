@@ -1,19 +1,19 @@
-package com.example.demo;
+package com.example.demo.entity;
 
 import java.time.LocalDate;
 
 public class User {
-		private int id;
+		private Integer id;
 	    private String password;
 	    private String name;
-	    private int age;
+	    private Integer age;
 	    private LocalDate day_start;
 	    private LocalDate day_end;
 
-	    public int getId() {
+	    public Integer getId() {
 	    	return id;
 		}
-		public void setId(int id) {
+		public void setId(Integer id) {
 			this.id = id;
 		}
 		public String getPassword() {
@@ -28,10 +28,10 @@ public class User {
 		public void setName(String name) {
 			this.name = name;
 		}
-		public int getAge() {
+		public Integer getAge() {
 			return age;
 		}
-		public void setAge(int age) {
+		public void setAge(Integer age) {
 			this.age = age;
 		}
 		public LocalDate getDay_start() {

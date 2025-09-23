@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <title>ログイン</title>
 <link rel="stylesheet" th:href="@{/css/style.css}">
-<script th:if="${error}">
-    alert([['${error}']]);
-</script>
-<script>
+<script th:inline="javascript">
+    let errorMsg = /*[[${error}]]*/ '';
+    if (errorMsg) {
+        alert(errorMsg);
+    }
 function validateLogin() {
     const id = document.querySelector('input[name="id"]').value.trim();
     const password = document.querySelector('input[name="password"]').value.trim();
@@ -15,7 +16,7 @@ function validateLogin() {
     if (!id) errors.push("社員IDは必須入力です。");
     else if (!/^\d+$/.test(id)) errors.push("社員IDは数値で入力してください。");
     if (!password) errors.push("パスワードは必須入力です。");
-    if (errors.length > 0) { alert(errors.join("\\n")); return false; }
+    if (errors.length > 0) { alert(errors.join("\n")); return false; }
     return true;
 }
 </script>

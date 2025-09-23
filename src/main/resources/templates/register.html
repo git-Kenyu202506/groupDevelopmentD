@@ -4,8 +4,11 @@
 <meta charset="UTF-8">
 <title>新規登録</title>
 <link rel="stylesheet" th:href="@{/css/style.css}">
-<script th:if="${error}">
-    alert([['${error}']]);
+<script th:inline="javascript">
+    let errorMsg = /*[[${error}]]*/ '';
+    if (errorMsg) {
+        alert(errorMsg);
+    }
 </script>
 <script>
 function validateRegister() {
@@ -27,13 +30,13 @@ function validateRegister() {
     }
     if (!password) errors.push("パスワードは必須入力です。");
     else if (password.length < 8) errors.push("パスワードは8文字以上で入力してください。");
-    else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]+$/.test(password)) {
+    else if ("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]+$".test(password)) {
         errors.push("パスワードは半角英数（大文字含む）で入力してください。");
     }
     if (!confirmPassword) errors.push("パスワード確認は必須入力です。");
     else if (password !== confirmPassword) errors.push("パスワードと確認用が一致しません。");
 
-    if (errors.length > 0) { alert(errors.join("\\n")); return false; }
+    if (errors.length > 0) { alert(errors.join("\n")); return false; }
     return true;
 }
 </script>
@@ -57,6 +60,10 @@ function validateRegister() {
         <input type="password" name="confirmPassword">
         <button type="submit">確認へ</button>
     </form>
+    
+    <form th:action="@{/menu}" method="get" class="form-box">
+		<button class = "mainmenu" type="submit">メインメニューへ戻る</button>
+	</form>
 </div>
 </body>
 </html>

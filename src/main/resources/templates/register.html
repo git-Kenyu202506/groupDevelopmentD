@@ -5,7 +5,7 @@
 <title>新規登録</title>
 <link rel="stylesheet" th:href="@{/css/style.css}">
 <script th:inline="javascript">
-    let errorMsg = /*[[${error}]]*/ '';
+    let errorMsg = /*[[${error}]]*/'';
     if (errorMsg) {
         alert(errorMsg);
     }
@@ -27,6 +27,9 @@ function validateRegister() {
     if (!startDate) errors.push("開始日は必須入力です。");
     if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
         errors.push("開始日は終了日より前にしてください。");
+    if (!endDate) errors.push("終了日は必須入力です。");
+    if (startDate && endDate && new Date(endDate) > new Date(startDate)) {
+        errors.push("終了日は開始日より後にしてください。");
     }
     if (!password) errors.push("パスワードは必須入力です。");
     else if (password.length < 8) errors.push("パスワードは8文字以上で入力してください。");
@@ -51,13 +54,13 @@ function validateRegister() {
         <label>年齢:</label>
         <input type="number" th:field="*{age}" name="age">
         <label>開始日:</label>
-        <input type="date" th:field="*{day_start}" name="day_start">
+        <input type="text" th:field="*{day_start}" name="day_start">
         <label>終了日:</label>
-        <input type="date" th:field="*{day_end}" name="day_end">
+        <input type="text" th:field="*{day_end}" name="day_end">
         <label>パスワード:</label>
-        <input type="password" th:field="*{password}" name="password">
+        <input type="password" th:value="*{password}" name="password">
         <label>パスワード確認:</label>
-        <input type="password" name="confirmPassword">
+        <input type="password" th:value="*{password}" name="confirmPassword">
         <button type="submit">確認へ</button>
     </form>
     

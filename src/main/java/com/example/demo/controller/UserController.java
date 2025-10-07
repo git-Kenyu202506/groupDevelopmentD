@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/register")
 public class UserController {
@@ -22,8 +24,10 @@ public class UserController {
 
     @GetMapping
     public String showRegisterForm(Model model) {
-        model.addAttribute("user", new User());
-        return "register";
+        if (!model.containsAttribute("user")) {
+            model.addAttribute("user", new User());
+        }
+        return "register"; // templates/register.html を返す
     }
 
     @PostMapping("/confirm")
@@ -40,6 +44,9 @@ public class UserController {
         }
         if (user.getDay_start() == null) {
             errors.append("開始日は必須入力です。");
+        }
+        if (user.getDay_end() == null) {
+            errors.append("終了日は必須入力です。");
         }
         if (user.getDay_start() != null && user.getDay_end() != null &&
             user.getDay_start().isAfter(user.getDay_end())) {
@@ -70,10 +77,12 @@ public class UserController {
     }
 
     @PostMapping("/back")
-    public String back(@ModelAttribute User user, Model model) {
+    public String backToRegister(@ModelAttribute("user") User user, HttpSession session, Model model) {
+        model.addAttribute("confirmPassword", session.getAttribute("confirmPassword")); // セッションから取得
         model.addAttribute("user", user);
         return "register";
     }
+    
 
     @PostMapping("/complete")
     public String complete(@ModelAttribute User user) {

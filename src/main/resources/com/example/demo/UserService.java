@@ -9,7 +9,12 @@ public class UserService {
     @Autowired
     private UserMapper mapper;
 
-    public List<User> selectAll() {
-        return mapper.selectAll();
+
+    public UserService(UserMapper mapper) {
+        this.mapper = mapper;
+    }
+    
+    public List<User> selectUserresult(SelectCondition condition) {
+    	return mapper.selectUserresult(condition);
     }
 }

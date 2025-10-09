@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ID受け渡しテスト</title>
+</head>
+<body>
+  <h1>ID受け渡しテスト</h1>
+
+  <ul th:if="${selectedUser != null}">
+    <p>選択されたユーザーID</p>
+    <li th:each="id : ${selectedUser}" th:text="${id}"></li>
+  </ul>
+
+<p th:if="${selectedUser == null or #lists.isEmpty(selectedUser)}">
+  選択されたユーザーはありません。
+</p>
+</body>
+</html>

@@ -1,21 +1,26 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>ID受け渡しテスト</title>
-</head>
-<body>
-  <h1>ID受け渡しテスト（更新）</h1>
 
-  <form th:action="@{/update}" th:object="${user}" method="post">
-   ID: <p th:text="${id}" ></p>
-    氏名：<input type="text" th:field="*{name}" /><br>
-    年齢：<input type="number" th:field="*{age}" /><br>
-    開始日：<input type="text" th:field="*{day_start}" /><br>
-    終了日：<input type="text" th:field="*{day_end}" /><br>
+<head>
+  <meta charset="UTF-8">
+  <title>画面遷移テスト</title>
+</head>
+
+<body>
+
+  <div th:replace="header :: header"></div>  
+  <h1>テスト（更新）</h1>
+
+  <form th:action="@{/update}" th:each="selectedUser : ${selectedUser}" method="post">
+    ID: <p th:text="${id}"></p>
+    氏名：<input type="text" th:field="*{selectedUser.name}" /><br>
+    年齢：<input type="number" th:field="*{selectedUser.age}" /><br>
+    開始日：<input type="text" th:field="*{selectedUser.day_start}" /><br>
+    終了日：<input type="text" th:field="*{selectedUser.day_end}" /><br>
     <input type="submit" value="更新">
-</form>
+  </form>
 
 
 </body>
+
 </html>

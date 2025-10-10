@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>メイン画面</title>
 </head>
+
 <body>
 
-<!--ここに共通化したheadderを挿入-->
 
-<main>
-  <a href="select.html">社員情報検索</a>
-  <a href="delete.html">社員情報削除</a>
-  <a href="insert.html">社員情報登録</a>
-  <a href="updateForm.html">社員情報更新</a>
-</main>
+  <div th:replace="header :: header"></div>
 
-<!--ここに共通化したfooderを挿入-->
+  <main>
+
+    <a th:href="@{/selectForm}">社員情報検索</a>
+    <a th:href="@{/delete}">社員情報削除</a>
+    <a th:href="@{/insert}">社員情報登録</a>
+    <a th:href="@{/update}">社員情報更新</a>
+
+  </main>
+
+  <div th:replace="fooder :: fooder"></div>
 
 </body>
+
 </html>

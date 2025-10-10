@@ -2,7 +2,11 @@ package com.example.demo;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
@@ -27,6 +31,25 @@ public class UserController {
 
 	public UserController(UserService service) {
 		this.service = service;
+	}
+	
+	@ModelAttribute
+	public void addLoginUserToModel(HttpSession session, Model model) { //マッピングされたメソッドが呼び出される直前に実行
+	    // セッションからログイン情報を取得
+	    User loginUser = (User) session.getAttribute("loginUser");
+	    if (loginUser != null) {//未ログインの場合はnullなので飛ばされる
+	        model.addAttribute("user", loginUser);
+	        java.time.LocalDateTime loginTime = (java.time.LocalDateTime) session.getAttribute("loginTime");// セッションからログイン時間を取得して model に渡す
+	        model.addAttribute("loginTime", loginTime);
+	    }
+	    
+	    //動作テスト　ログイン済みの場合
+	    User testUser = new User();
+	    testUser.setId(11111);
+	    testUser.setName("テストユーザー");
+	    LocalDateTime now = LocalDateTime.now();
+	    model.addAttribute("user", testUser);
+	    model.addAttribute("loginTime", now);
 	}
 
 	@InitBinder //フォームのデータをコントローラーのメソッド引数や Form クラスにバインド（自動変換）する前 に呼び出される
@@ -88,7 +111,7 @@ public class UserController {
 		// 条件検索
 		List<User> user = service.selectUserresult(condition);//serviceクラスに検索条件を渡し返ってきた結果をuserとして検索画面に渡して表示
 		model.addAttribute("condition", condition);
-		model.addAttribute("user", user);
+		model.addAttribute("userList", user);
 		model.addAttribute("count", user.size());
 		return "selectForm";
 	}
@@ -102,7 +125,7 @@ public class UserController {
 			SelectCondition condition = new SelectCondition(); 
 			model.addAttribute("condition", condition);
 			List<User> user = service.selectUserresult(condition);
-			model.addAttribute("user", user);
+			model.addAttribute("userList", user);
 			model.addAttribute("count", user.size());
 			return "selectForm";
 		}
@@ -112,26 +135,36 @@ public class UserController {
 		model.addAttribute("selectedIds", selectedIds);//選択したユーザーidを削除画面に渡す
 		return "delete";//delete(削除画面仮値)に遷移
 	}
-
-	@GetMapping("/update/{id}")//update(更新画面仮値)を受け取ったら
+	
+	@GetMapping("/delete")//delete(削除画面仮値)を受け取ったら Getの場合(検索結果からではなくリンクから)
+	public String showDeleteForm(Model model) {
+		model.addAttribute("selectedUsers", null);
+		return "delete";
+	}
+	@GetMapping("/update/{id}")//update/{id}(更新画面仮値)を受け取ったら
 	public String showUpdateForm(@PathVariable("id") int id, Model model) { //URL内のidを引数として受け取る
-		User user = service.selectById(id); // IDで1件取得
-		if (user == null) {
+		User selectedUser = service.selectById(id); // IDで1件取得
+		if (selectedUser == null) {
 			model.addAttribute("error", "指定されたユーザーが存在しません。");
 			SelectCondition condition = new SelectCondition(); 
 			model.addAttribute("condition", condition);
 			return "selectForm"; // 元の一覧に戻る
 		}
-		model.addAttribute("user", user); //id以外の情報を更新画面に渡す必要がなければ「IDで1件取得」〜この行は不要
+		model.addAttribute("selectedUser", selectedUser); //id以外の情報を更新画面に渡す必要がなければ「IDで1件取得」〜この行は不要
 		model.addAttribute("id", id);
 		return "update"; // update(更新画面仮値)に遷移
+	}
+	@GetMapping("/update")//update(更新画面仮値)を受け取ったら
+	public String showUpdateForm(Model model) {
+		model.addAttribute("userList", null);
+		return "update"; 
 	}
 
 	private String selectUserform(Model model) { //社員検索メソッド
 		SelectCondition condition = new SelectCondition(); //検索条件のクラスオブジェクトを作成
 		List<User> user = service.selectUserresult(condition); //検索結果をuserとする
 		model.addAttribute("condition", condition);
-		model.addAttribute("user", user);
+		model.addAttribute("userList", user);
 		long count = user.size();
 		model.addAttribute("count", count);
 		return "selectForm";//検索条件、結果、検索結果の件数をmodelに入れて検索画面に渡して表示

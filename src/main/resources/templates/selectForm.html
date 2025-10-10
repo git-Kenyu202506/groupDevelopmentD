@@ -7,7 +7,7 @@
 </head>
 
 <body>
-
+    <div th:replace="header :: header"></div>
     <div th:if="${error}" style="color:red;">
         <p th:text="${error}"></p>
     </div>
@@ -47,7 +47,7 @@
                 <th>開始日</th>
                 <th>終了日</th>
             </tr>
-            <tr th:each="user : ${user}">
+            <tr th:each="user : ${userList}">
                 <td><input type="checkbox" name="selectedUser" th:value="${user.id}" /></td>
                 <td>
                     <a th:href="@{/update/{id}(id=${user.id})}" th:text="${user.id}"></a>

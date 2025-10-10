@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.jdbc.SQL;
 
 public class UserSqlProvider { //動的にmapperを作成（controllerから受け取ったconditionによってmapperの命令文を変える）
@@ -34,4 +37,17 @@ public class UserSqlProvider { //動的にmapperを作成（controllerから受�
 		}}
 		.toString(); //作成した命令文を文字列に変換
 	}
+	
+	public String buildSelectByIds(Map<String, Object> params) { //複数のid検索
+	    List<Integer> ids = (List<Integer>) params.get("ids");
+	    StringBuilder sql = new StringBuilder();
+	    sql.append("SELECT * FROM user WHERE id IN (");
+	    for (int i = 0; i < ids.size(); i++) {
+	        sql.append("#{ids[").append(i).append("]}");
+	        if (i < ids.size() - 1) sql.append(",");
+	    }
+	    sql.append(")");
+	    return sql.toString();
+	}
+
 }

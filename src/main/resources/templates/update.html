@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ID受け渡しテスト</title>
+</head>
+<body>
+  <h1>ID受け渡しテスト（更新）</h1>
+
+  <form th:action="@{/update}" th:object="${user}" method="post">
+   ID: <p th:text="${id}" ></p>
+    氏名：<input type="text" th:field="*{name}" /><br>
+    年齢：<input type="number" th:field="*{age}" /><br>
+    開始日：<input type="text" th:field="*{day_start}" /><br>
+    終了日：<input type="text" th:field="*{day_end}" /><br>
+    <input type="submit" value="更新">
+</form>
+
+
+</body>
+</html>

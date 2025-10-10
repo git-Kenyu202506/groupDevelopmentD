@@ -14,6 +14,15 @@ public class UserService {
         this.mapper = mapper;
     }
     
+    public User selectById(int id) {
+        return mapper.selectById(id);
+    }
+    
+    public List<User> selectByIds(List<Integer> ids) {
+        return mapper.selectByIds(ids);
+    }
+
+    
     public List<User> selectUserresult(SelectCondition condition) {
     	return mapper.selectUserresult(condition);
     }

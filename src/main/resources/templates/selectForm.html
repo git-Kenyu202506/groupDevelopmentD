@@ -1,50 +1,66 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>社員情報検索</title>
 </head>
+
 <body>
 
-<div th:if="${error}" style="color:red;">
-    <p th:text="${error}"></p>
-</div>
+    <div th:if="${error}" style="color:red;">
+        <p th:text="${error}"></p>
+    </div>
+    <div th:if="${error_select}" style="color:red;">
+        <p th:text="${error_select}"></p>
+    </div>
 
-<form th:action="@{/selectResult}" th:object="${condition}" method="post">
-    社員ID: <input type="text" th:field="*{id}" /><br>
-    年齢: <input type="text" th:field="*{age_min}" /> ~ <input type="text" th:field="*{age_max}" /><br>
-    社員名: <input type="text" th:field="*{name}" /><br>
-    開始日: <input type="date" th:field="*{day_start_min}" /> ~ <input type="date" th:field="*{day_start_max}" /><br>
-    終了日: <input type="date" th:field="*{day_end_min}" /> ~ <input type="date" th:field="*{day_end_max}" /><br>
-    <input type="submit" value="検索">
-    <a th:href="@{/clearCondition}"><button type="button">クリア</button></a>
-</form>
+    <a th:href="@{/index}"><button type="button">メニュー</button></a>
+    <a th:href="@{/insert}"><button type="button">登録</button></a>
 
-<table>
-    <tr>
-        <th th:text="${count}"></th>
-        <th>件</th>
-    </tr>
-</table>
 
-<p th:if="${count} == 0">レコードがありません。</p>
 
-<form th:action="@{/selectUser}" method="post">
-    <table border="1" th:if="${user} != null">
+    <form th:action="@{/selectResult}" th:object="${condition}" method="post">
+        社員ID: <input type="text" th:field="*{id}" /><br>
+        年齢: <input type="text" th:field="*{age_min}" /> ~ <input type="text" th:field="*{age_max}" /><br>
+        社員名: <input type="text" th:field="*{name}" /><br>
+        開始日: <input type="date" th:field="*{day_start_min}" /> ~ <input type="date" th:field="*{day_start_max}" /><br>
+        終了日: <input type="date" th:field="*{day_end_min}" /> ~ <input type="date" th:field="*{day_end_max}" /><br>
+        <input type="submit" value="検索">
+        <a th:href="@{/clearCondition}"><button type="button">クリア</button></a>
+    </form>
+
+    <p th:if="${error}" style="color: red;">レコードが見つかりません。</p>
+    <table th:if="${error} == null">
         <tr>
-            <th></th><th>ID</th><th>氏名</th><th>年齢</th><th>開始日</th><th>終了日</th>
-        </tr>
-        <tr th:each="user : ${user}">
-            <td><input type="checkbox" name="selectedUser" th:value="${user.id}" /></td>
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.name}"></td>
-            <td th:text="${user.age}"></td>
-            <td th:text="${user.day_start}"></td>
-            <td th:text="${user.day_end}"></td>
+            <th th:text="${count}"></th>
+            <th>件</th>
         </tr>
     </table>
-    <input type="submit" value="削除">
-</form>
+    <form th:if="${error} == null" th:action="@{/delete}" method="post">
+        <table border="1">
+            <tr>
+                <th></th>
+                <th>ID</th>
+                <th>氏名</th>
+                <th>年</th>
+                <th>開始日</th>
+                <th>終了日</th>
+            </tr>
+            <tr th:each="user : ${user}">
+                <td><input type="checkbox" name="selectedUser" th:value="${user.id}" /></td>
+                <td>
+                    <a th:href="@{/update/{id}(id=${user.id})}" th:text="${user.id}"></a>
+                </td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.age}"></td>
+                <td th:text="${user.day_start}"></td>
+                <td th:text="${user.day_end}"></td>
+            </tr>
+        </table>
+        <input type="submit" value="削除">
+    </form>
 
 </body>
+
 </html>

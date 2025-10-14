@@ -1,10 +1,10 @@
 package com.example.demo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class SelectCondition {
 
-    private Integer id;
+    private String id;
     private String name;
     private Integer age_min;
     private Integer age_max;
@@ -16,8 +16,8 @@ public class SelectCondition {
     public SelectCondition() {}
 
     // getter / setter
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

@@ -24,23 +24,15 @@ public class UserSqlProvider { //動的にmapperを作成（controllerから受�
                 WHERE("age <= #{age_max}");
             }
             if (condition.getDay_start_min() != null) {
-            	java.util.Date day_util = condition.getDay_start_min();
-            	Date day_start_min = new java.sql.Date(day_util.getTime());
                 WHERE("day_start >= #{day_start_min}");
             }
             if (condition.getDay_start_max() != null) {
-            	java.util.Date day_util = condition.getDay_start_max();
-            	Date day_start_max = new java.sql.Date(day_util.getTime());
                 WHERE("day_start <= #{day_start_max}");
             }
             if (condition.getDay_end_min() != null) {
-            	java.util.Date day_util = condition.getDay_end_min();
-            	Date day_end_min = new java.sql.Date(day_util.getTime());
                 WHERE("day_end >= #{day_end_min}");
             }
             if (condition.getDay_end_max() != null) {
-            	java.util.Date day_util = condition.getDay_end_max();
-            	Date day_end_max = new java.sql.Date(day_util.getTime());
                 WHERE("day_end <= #{day_end_max}");
             }
 		}}

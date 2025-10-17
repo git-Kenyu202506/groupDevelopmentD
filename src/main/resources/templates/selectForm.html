@@ -1,13 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-<head>
-    <meta charset="UTF-8">
-    <title>社員情報検索</title>
-</head>
-
+<head th:replace="header :: header('社員検索')"></head>
 <body>
-    <div th:replace="header :: header"></div>
     <div th:if="${error}" style="color:red;">
         <p th:text="${error}"></p>
     </div>

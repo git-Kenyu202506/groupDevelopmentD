@@ -1,15 +1,8 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="UTF-8">
-  <title>画面遷移テスト</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: header('更新画面(仮)')"></head>
 
 <body>
-
-  <div th:replace="header :: header"></div>  
-  <h1>テスト（更新）</h1>
 
   <form th:action="@{/update}" th:each="selectedUser : ${selectedUser}" method="post">
     ID: <p th:text="${id}"></p>
@@ -19,7 +12,6 @@
     終了日：<input type="text" th:field="*{selectedUser.day_end}" /><br>
     <input type="submit" value="更新">
   </form>
-
 
 </body>
 

@@ -1,16 +1,7 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="UTF-8">
-  <title>ID受け渡しテスト</title>
-</head>
-
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: header('削除画面(仮)')"></head>
 <body>
-
-  <div th:replace="header :: header"></div>
-  <h1>ID受け渡しテスト（削除画面）</h1>
-
   <p th:if="${selectedUsers == null or #lists.isEmpty(selectedUsers)}">
     選択されたユーザーはありません。
   </p>

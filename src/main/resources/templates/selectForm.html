@@ -1,73 +1,97 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="header :: header('社員検索')"></head>
+<head th:replace="header :: header('社員情報検索')"></head>
 
 <body>
-    <div th:if="${error}" style="color:red;">
-        <p th:text="${error}"></p>
+    <div class="container">
+        <div th:if="${error}" style="color:red;">
+            <p th:text="${error}"></p>
+        </div>
+        <div th:if="${error_select}" style="color:red;">
+            <p th:text="${error_select}"></p>
+        </div>
+
+        <div class="top-button-group">
+            <a class="buttonMenu" th:href="@{/index}"><button type="button">メニュー</button></a>
+            <a class="buttonInsert" th:href="@{/insert}"><button type="button">登録</button></a>
+        </div>
+
+        <form th:action="@{/selectResult}" th:object="${condition}" method="post" class="search-form">
+            <div class="form-fields">
+                <table class="form-table">
+                    <tbody>
+                        <tr>
+                            <td>社員ID <input type="text" th:field="*{id}"></td>
+                            <td>年齢 <input type="text" th:field="*{age_min}"> ~ <input type="text" th:field="*{age_max}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>社員名 <input type="text" th:field="*{name}"></td>
+                            <td>
+                                開始日
+                                <input type="text" th:field="*{day_start_min}" placeholder="yyyy/MM/dd"
+                                    pattern="\d{4}/\d{2}/\d{2}" title="yyyy/MM/dd 形式で入力">
+                                ~
+                                <input type="text" th:field="*{day_start_max}" placeholder="yyyy/MM/dd">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                終了日
+                                <input type="text" th:field="*{day_end_min}" placeholder="yyyy/MM/dd">
+                                ~
+                                <input type="text" th:field="*{day_end_max}" placeholder="yyyy/MM/dd">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-actions">
+                <input class="button" type="submit" value="検索">
+                <a th:href="@{/clearCondition}"><button type="button">クリア</button></a>
+            </div>
+        </form>
+
+        <form th:if="${error} == null" th:action="@{/delete}" method="post" id="deleteForm">
+            <div class="result-header">
+                <div class="result-count" th:if="${count != null}">
+                    <span th:text="${count}"></span>
+                    <span>件</span>
+                </div>
+                <div class="delete-button">
+                    <input class="button" type="submit" id="deleteBtn" value="削除" disabled>
+                </div>
+            </div>
+            <div class="result-body">
+                <table th:if="${userList != null and not #lists.isEmpty(userList)}" border="1">
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>氏名</th>
+                        <th>年齢</th>
+                        <th>開始日</th>
+                        <th>終了日</th>
+                    </tr>
+                    <tr th:each="user : ${userList}">
+                        <td>
+                            <input type="checkbox" name="selectedUser" th:value="${user.id}" class="userCheckbox" />
+                        </td>
+                        <td>
+                            <a th:href="@{/update/{id}(id=${user.id})}" th:text="${user.id}"></a>
+                        </td>
+                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.age}"></td>
+                        <td th:text="${user.day_start}"></td>
+                        <td th:text="${user.day_end}"></td>
+                    </tr>
+                </table>
+
+                <div th:replace="footer :: footer"></div>
+            </div>
+        </form>
     </div>
-    <div th:if="${error_select}" style="color:red;">
-        <p th:text="${error_select}"></p>
-    </div>
-
-    <a th:href="@{/index}"><button type="button">メニュー</button></a>
-    <a th:href="@{/insert}"><button type="button">登録</button></a>
-
-
-
-    <form th:action="@{/selectResult}" th:object="${condition}" method="post">
-        社員ID: <input type="text" th:field="*{id}" /><br>
-        年齢: <input type="text" th:field="*{age_min}" /> ~ <input type="text" th:field="*{age_max}" /><br>
-        社員名: <input type="text" th:field="*{name}" /><br>
-
-        開始日:
-        <input type="text" th:field="*{day_start_min}" placeholder="yyyy/MM/dd" pattern="\d{4}/\d{2}/\d{2}"
-            title="yyyy/MM/dd 形式で入力">
-        ~
-        <input type="text" th:field="*{day_start_max}" placeholder="yyyy/MM/dd"><br>
-
-        終了日:
-        <input type="text" th:field="*{day_end_min}" placeholder="yyyy/MM/dd">
-        ~
-        <input type="text" th:field="*{day_end_max}" placeholder="yyyy/MM/dd"><br>
-
-        <input type="submit" value="検索">
-        <a th:href="@{/clearCondition}"><button type="button">クリア</button></a>
-    </form>
-    <table th:if="${error} == null">
-        <tr>
-            <th th:text="${count}"></th>
-            <th>件</th>
-        </tr>
-    </table>
-    <form th:if="${error} == null" th:action="@{/delete}" method="post" id="deleteForm">
-        <table th:if="${error} == null" border="1">
-            <tr>
-                <th></th>
-                <th>ID</th>
-                <th>氏名</th>
-                <th>年</th>
-                <th>開始日</th>
-                <th>終了日</th>
-            </tr>
-            <tr th:each="user : ${userList}">
-                <td>
-                    <input type="checkbox" name="selectedUser" th:value="${user.id}" class="userCheckbox" />
-                </td>
-                <td>
-                    <a th:href="@{/update/{id}(id=${user.id})}" th:text="${user.id}"></a>
-                </td>
-                <td th:text="${user.name}"></td>
-                <td th:text="${user.age}"></td>
-                <td th:text="${user.day_start}"></td>
-                <td th:text="${user.day_end}"></td>
-            </tr>
-        </table>
-        <input type="submit" id="deleteBtn" value="削除" disabled>
-    </form>
-
-    <div th:replace="fooder :: fooder"></div>
 
     <script>
         // チェックボックスの取得
@@ -83,7 +107,7 @@
         // チェックボックスにイベントリスナー
         checkboxes.forEach(cb => cb.addEventListener('change', toggleDeleteButton));
 
-        // 念のためフォーム送信時のガード
+        // フォーム送信時のガード
         document.getElementById('deleteForm').addEventListener('submit', (e) => {
             const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
             if (!anyChecked) {

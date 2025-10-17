@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="header :: header('削除画面(仮)')"></head>
+
 <body>
   <p th:if="${selectedUsers == null or #lists.isEmpty(selectedUsers)}">
     選択されたユーザーはありません。

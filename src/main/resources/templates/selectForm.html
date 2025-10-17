@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="header :: header('社員検索')"></head>
+
 <body>
     <div th:if="${error}" style="color:red;">
         <p th:text="${error}"></p>
@@ -39,55 +41,55 @@
             <th>件</th>
         </tr>
     </table>
-<form th:if="${error} == null" th:action="@{/delete}" method="post" id="deleteForm">
-    <table th:if="${error} == null" border="1">
-        <tr>
-            <th></th>
-            <th>ID</th>
-            <th>氏名</th>
-            <th>年</th>
-            <th>開始日</th>
-            <th>終了日</th>
-        </tr>
-        <tr th:each="user : ${userList}">
-            <td>
-                <input type="checkbox" name="selectedUser" th:value="${user.id}" class="userCheckbox" />
-            </td>
-            <td>
-                <a th:href="@{/update/{id}(id=${user.id})}" th:text="${user.id}"></a>
-            </td>
-            <td th:text="${user.name}"></td>
-            <td th:text="${user.age}"></td>
-            <td th:text="${user.day_start}"></td>
-            <td th:text="${user.day_end}"></td>
-        </tr>
-    </table>
-    <input type="submit" id="deleteBtn" value="削除" disabled>
-</form>
+    <form th:if="${error} == null" th:action="@{/delete}" method="post" id="deleteForm">
+        <table th:if="${error} == null" border="1">
+            <tr>
+                <th></th>
+                <th>ID</th>
+                <th>氏名</th>
+                <th>年</th>
+                <th>開始日</th>
+                <th>終了日</th>
+            </tr>
+            <tr th:each="user : ${userList}">
+                <td>
+                    <input type="checkbox" name="selectedUser" th:value="${user.id}" class="userCheckbox" />
+                </td>
+                <td>
+                    <a th:href="@{/update/{id}(id=${user.id})}" th:text="${user.id}"></a>
+                </td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.age}"></td>
+                <td th:text="${user.day_start}"></td>
+                <td th:text="${user.day_end}"></td>
+            </tr>
+        </table>
+        <input type="submit" id="deleteBtn" value="削除" disabled>
+    </form>
 
-<script>
-    // チェックボックスの取得
-    const checkboxes = document.querySelectorAll('.userCheckbox');
-    const deleteBtn = document.getElementById('deleteBtn');
+    <script>
+        // チェックボックスの取得
+        const checkboxes = document.querySelectorAll('.userCheckbox');
+        const deleteBtn = document.getElementById('deleteBtn');
 
-    function toggleDeleteButton() {
-        // 1つ以上チェックされていれば有効化
-        const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
-        deleteBtn.disabled = !anyChecked;
-    }
-
-    // チェックボックスにイベントリスナー
-    checkboxes.forEach(cb => cb.addEventListener('change', toggleDeleteButton));
-
-    // 念のためフォーム送信時のガード
-    document.getElementById('deleteForm').addEventListener('submit', (e) => {
-        const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
-        if (!anyChecked) {
-            e.preventDefault();
-            alert('削除するユーザーを選択してください。');
+        function toggleDeleteButton() {
+            // 1つ以上チェックされていれば有効化
+            const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+            deleteBtn.disabled = !anyChecked;
         }
-    });
-</script>
+
+        // チェックボックスにイベントリスナー
+        checkboxes.forEach(cb => cb.addEventListener('change', toggleDeleteButton));
+
+        // 念のためフォーム送信時のガード
+        document.getElementById('deleteForm').addEventListener('submit', (e) => {
+            const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+            if (!anyChecked) {
+                e.preventDefault();
+                alert('削除するユーザーを選択してください。');
+            }
+        });
+    </script>
     <!-- エラーメッセージがある場合のみポップアップ表示 -->
     <script th:if="${error != null}">
         alert('[[${error}]]');

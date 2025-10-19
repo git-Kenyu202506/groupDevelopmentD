@@ -12,13 +12,15 @@
     <header>
         <h1 th:text="${title}">タイトル</h1>
         <div class="loginUser">
-            <p>
-                <span th:text="${user.name}"></span> さん（ID: <span th:text="${user.id}"></span>）
-            </p>
-            <span th:text="${#temporals.format(loginTime, 'yyyy/MM/dd HH:mm:ss')}"></span>
-            <span th:if="${user == null}">
-                （未ログイン）
-            </span>
+            <th:block th:if="${user}">
+                <p>
+                    <span th:text="${user.name}"></span> さん（ID: <span th:text="${user.id}"></span>）
+                </p>
+                <span th:text="${#temporals.format(loginTime, 'yyyy/MM/dd HH:mm:ss')}"></span>
+            </th:block>
+            <th:block th:unless="${user}">
+                <p>未ログイン</p>
+            </th:block>
         </div>
     </header>
 </body>

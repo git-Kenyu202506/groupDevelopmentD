@@ -61,7 +61,7 @@
                     <span>件</span>
                 </div>
                 <div class="delete-button">
-                    <input class="button" type="submit" id="deleteBtn" value="削除" disabled>
+                    <input class="button" type="submit" id="deleteBtn" value="削除">
                 </div>
             </div>
             <div class="result-body">
@@ -87,6 +87,9 @@
                         <td th:text="${user.day_end}"></td>
                     </tr>
                 </table>
+                <div th:if="${userList != null and #lists.isEmpty(userList)}" style="color:red;">
+                    <p>該当するユーザーは見つかりませんでした。</p>
+                </div>
 
                 <div th:replace="footer :: footer"></div>
             </div>
@@ -94,24 +97,30 @@
     </div>
 
     <script>
-        // チェックボックスの取得
         const checkboxes = document.querySelectorAll('.userCheckbox');
         const deleteBtn = document.getElementById('deleteBtn');
 
-        function toggleDeleteButton() {
-            // 1つ以上チェックされていれば有効化
+        // Function to update the button's visual state
+        function updateButtonState() {
             const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
-            deleteBtn.disabled = !anyChecked;
+            if (anyChecked) {
+                deleteBtn.classList.remove('disabled');
+            } else {
+                deleteBtn.classList.add('disabled');
+            }
         }
 
-        // チェックボックスにイベントリスナー
-        checkboxes.forEach(cb => cb.addEventListener('change', toggleDeleteButton));
+        // Set initial state on page load
+        updateButtonState();
 
-        // フォーム送信時のガード
-        document.getElementById('deleteForm').addEventListener('submit', (e) => {
+        // Add listeners to checkboxes to update button state
+        checkboxes.forEach(cb => cb.addEventListener('change', updateButtonState));
+
+        // Add click listener to the delete button
+        deleteBtn.addEventListener('click', (e) => {
             const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
             if (!anyChecked) {
-                e.preventDefault();
+                e.preventDefault(); // Prevent form submission
                 alert('削除するユーザーを選択してください。');
             }
         });

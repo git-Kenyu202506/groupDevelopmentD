@@ -42,14 +42,14 @@ public class UserController {
 			java.time.LocalDateTime loginTime = (java.time.LocalDateTime) session.getAttribute("loginTime");// セッションからログイン時間を取得して model に渡す
 			model.addAttribute("loginTime", loginTime);
 		}
-
+//
 		//動作テスト　ログイン済みの場合
-		User testUser = new User();
-		testUser.setId(11111);
-		testUser.setName("テストユーザー");
-		LocalDateTime now = LocalDateTime.now();
-		model.addAttribute("user", testUser);
-		model.addAttribute("loginTime", now);
+//		User testUser = new User();
+//		testUser.setId(11111);
+//		testUser.setName("テストユーザー");
+//		LocalDateTime now = LocalDateTime.now();
+//		model.addAttribute("user", testUser);
+//		model.addAttribute("loginTime", now);
 	}
 
 	@InitBinder //フォームのデータをコントローラーのメソッド引数や Form クラスにバインド（自動変換）する前 に呼び出される
@@ -201,6 +201,12 @@ public class UserController {
 		if (condition.getDay_end_min() != null && condition.getDay_end_max() != null
 				&& condition.getDay_end_min().after(condition.getDay_end_max()))
 			return "終了日範囲が不正です。";
+		if (condition.getDay_start_min() != null && condition.getDay_end_min() != null
+				&& condition.getDay_start_min().after(condition.getDay_end_min()))
+			return "終了日は開始日以前に指定できません";
+		if (condition.getDay_start_max() != null && condition.getDay_end_max() != null
+				&& condition.getDay_start_max().after(condition.getDay_end_max()))
+			return "終了日は開始日以前に指定できません";
 		return null;
 	}
 }

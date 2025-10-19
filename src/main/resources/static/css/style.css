@@ -17,13 +17,13 @@ header {
 header h1 {
     margin: 0;
     vertical-align: bottom;
-    font-size: 1.5em;
+    font-size: 2.5em;
     color: #333;
 }
 
 header .loginUser {
     text-align: right;
-    font-size: 0.9em;
+    font-size: 1em;
     color: #555;
 }
 
@@ -31,10 +31,15 @@ header .loginUser p {
     margin: 0;
 }
 
-/*リンク部分下線削除*/
+/*リンク部分*/
 
 a {
     text-decoration: none;
+}
+
+a:hover {
+    color: #555;
+    font-weight: bold;
 }
 
 /*footer*/
@@ -47,20 +52,29 @@ footer {
 }
 
 footer p {
-    margin: 0;
-    padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
+.result-body footer {
+    width: 100%;
+    margin-left: 0;
+}
 /*---------------------トップメニュー---------------------*/
 
-table.topMenu {
+main {
     width: 70%;
-    margin: 0;
+}
+
+table.topMenu {
+    width: auto;
+    margin: 0 auto;
     padding: 10px;
 }
 
-td {
-    height: 3.5em;
+.topMenu td {
+    height: 5em;
+    padding: 10px 10em;
     text-align: center;
 }
 
@@ -117,6 +131,21 @@ input {
     margin-bottom: 10px;
 }
 
+.result-body {
+    display: flex;
+    align-items: flex-start;
+}
+
+.result-body > table {
+    width: 70%;
+}
+
+.result-body > div {
+    width: 30%;
+    padding-left: 20px;
+    box-sizing: border-box;
+}
+
 .result-count {
     text-align: left;
 }
@@ -135,6 +164,10 @@ input {
     border-collapse: collapse
 }
 
+#deleteForm td a:hover {
+    font-weight: unset;    
+}
+
 th {
     background-color: lightblue;
 }
@@ -146,9 +179,13 @@ button {
 }
 
 input.button {
-    width: 6em;
+	width: 6em;
 }
 
+.button.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 .container {
     width: 90%;
     margin: 0 auto;
